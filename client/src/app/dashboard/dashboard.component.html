@@ -1,0 +1,28 @@
+<h1>Welcome to the Dashboard</h1>
+    <div *ngIf="user">
+    <h2>{{ user.login }}</h2>
+    <img [src]="user.avatar_url" alt="User Avatar" width="100">
+</div>
+
+<mat-card *ngIf="loading">Loading...</mat-card>
+<mat-card *ngIf="!loading && integrations.length === 0">
+  No GitHub integrations found.
+</mat-card>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let integration of integrations">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <img [src]="integration.avatar_url" width="50" /> {{ integration.username }}
+        <mat-icon color="primary" *ngIf="!integration.isSyncing && integration.lastSynced">check_circle</mat-icon>
+        <mat-icon color="primary" *ngIf="integration.isSyncing">autorenew</mat-icon>
+      </mat-panel-title>
+      <mat-panel-description>
+        Connected on {{ integration.lastSynced | date: 'dd/MM/yyyy hh:mm:ss' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-icon-button color="warn" (click)="removeIntegration(integration.username)">
+      <mat-icon>delete</mat-icon>
+  </button>
+  </mat-expansion-panel>
+</mat-accordion>
+<app-grid [integrations]="integrations"></app-grid>

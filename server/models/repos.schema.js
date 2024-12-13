@@ -1,0 +1,131 @@
+const mongoose = require('mongoose');
+const { flattenObject } = require('../helpers/custom-functions');
+const { setModel } = require('./index.schema');
+const RepoSchema = new mongoose.Schema({ 
+    identity: { type: String }, 
+    organization: { type: String }, 
+    id: { type: Number, unique: true },
+    node_id: { type: String },
+    name: { type: String },
+    full_name: { type: String },
+    private: { type: Boolean, default: false },
+    owner: {
+      login: { type: String },
+      id: { type: Number },
+      node_id: { type: String },
+      avatar_url: { type: String },
+      gravatar_id: { type: String },
+      url: { type: String },
+      html_url: { type: String },
+      followers_url: { type: String },
+      following_url: { type: String },
+      gists_url: { type: String },
+      starred_url: { type: String },
+      subscriptions_url: { type: String },
+      organizations_url: { type: String },
+      repos_url: { type: String },
+      events_url: { type: String },
+      received_events_url: { type: String },
+      type: { type: String },
+      user_view_type: { type: String },
+      site_admin: { type: Boolean },
+    },
+    html_url: { type: String },
+    description: { type: String },
+    fork: { type: Boolean },
+    url: { type: String },
+    forks_url: { type: String },
+    keys_url: { type: String },
+    collaborators_url: { type: String },
+    teams_url: { type: String },
+    hooks_url: { type: String },
+    issue_events_url: { type: String },
+    events_url: { type: String },
+    assignees_url: { type: String },
+    branches_url: { type: String },
+    tags_url: { type: String },
+    blobs_url: { type: String },
+    git_tags_url: { type: String },
+    git_refs_url: { type: String },
+    trees_url: { type: String },
+    statuses_url: { type: String },
+    languages_url: { type: String },
+    stargazers_url: { type: String },
+    contributors_url: { type: String },
+    subscribers_url: { type: String },
+    subscription_url: { type: String },
+    commits_url: { type: String },
+    git_commits_url: { type: String },
+    comments_url: { type: String },
+    issue_comment_url: { type: String },
+    contents_url: { type: String },
+    compare_url: { type: String },
+    merges_url: { type: String },
+    archive_url: { type: String },
+    downloads_url: { type: String },
+    issues_url: { type: String },
+    pulls_url: { type: String },
+    milestones_url: { type: String },
+    notifications_url: { type: String },
+    labels_url: { type: String },
+    releases_url: { type: String },
+    deployments_url: { type: String },
+    created_at: { type: Date },
+    updated_at: { type: Date },
+    pushed_at: { type: Date },
+    git_url: { type: String },
+    ssh_url: { type: String },
+    clone_url: { type: String },
+    svn_url: { type: String },
+    homepage: { type: String, default: null },
+    size: { type: Number },
+    stargazers_count: { type: Number },
+    watchers_count: { type: Number },
+    has_issues: { type: Boolean },
+    has_projects: { type: Boolean },
+    has_downloads: { type: Boolean },
+    has_wiki: { type: Boolean },
+    has_pages: { type: Boolean },
+    has_discussions: { type: Boolean, default: false },
+    forks_count: { type: Number },
+    mirror_url: { type: String, default: null },
+    archived: { type: Boolean },
+    disabled: { type: Boolean },
+    open_issues_count: { type: Number },
+    license: { type: mongoose.Schema.Types.Mixed, default: null },
+    allow_forking: { type: Boolean },
+    is_template: { type: Boolean, default: false },
+    web_commit_signoff_required: { type: Boolean, default: false },
+    topics: { type: [String], default: [] },
+    visibility: { type: String },
+    forks: { type: Number },
+    open_issues: { type: Number },
+    watchers: { type: Number },
+    default_branch: { type: String },
+    permissions: {
+      admin: { type: Boolean },
+      maintain: { type: Boolean },
+      push: { type: Boolean },
+      triage: { type: Boolean },
+      pull: { type: Boolean },
+    },
+    isDeleted: { type: Boolean, default: false },
+});
+RepoSchema.index({ id: 1 }, { unique: true });
+RepoSchema.index({ name: 1 });
+RepoSchema.index({ full_name: 1 });
+RepoSchema.index({ 'owner.login': 1 });
+RepoSchema.index({ created_at: -1 });
+RepoSchema.index({ updated_at: -1 });
+RepoSchema.index({ stargazers_count: -1 });
+RepoSchema.index({ forks_count: -1 });
+RepoSchema.index({ description: 'text' });
+RepoSchema.post("find", function (docs, next) {
+  docs.forEach((doc, index) => {
+    docs[index] = flattenObject(doc.toObject());
+  });
+  next();
+});
+const Repo = mongoose.model('Repo', RepoSchema);
+setModel(Repo.collection.name, Repo);
+module.exports = Repo;

@@ -1,0 +1,27 @@
+.controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.controls label {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.search-input {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.ag-theme-alpine {
+  margin-top: 10px;
+}
+
+.ag-body.ag-layout-normal {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}

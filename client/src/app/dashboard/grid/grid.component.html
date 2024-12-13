@@ -1,0 +1,37 @@
+<div class="controls">
+  <label for="integrations">Active Integration:</label>
+  <select id="integrations" [(ngModel)]="_integration">
+    <option value="" disabled selected>Select an Integration</option>
+    <option *ngFor="let __integration of integrations" [value]="__integration.username">
+      {{ __integration.username }}
+    </option>
+  </select>
+
+  <label for="entity">Entity:</label>
+  <select id="entity" (change)="onCollectionSelect($event)">
+    <option value="" disabled selected>Select a Collection</option>
+    <option *ngFor="let collection of collections" [value]="collection">
+      {{ collection | uppercase }}
+    </option>
+  </select>
+
+  <input
+    type="text"
+    placeholder="Search..."
+    (input)="onSearch($event)"
+    class="search-input"
+  />
+</div>
+<div style="height: 600px; width: 100%;" class="ag-theme-alpine">
+  <ag-grid-angular
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [pagination]="true"
+    [paginationPageSize]="10"
+    [paginationPageSizeSelector]="[10, 20, 50]"
+    [modules]="modules"
+    (gridReady)="onGridReady($event)">
+  ></ag-grid-angular>
+</div>

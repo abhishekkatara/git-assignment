@@ -1,0 +1,8 @@
+<div>
+	<h1>Connect Sredio to GitHub</h1>
+	<button (click)="loginWithGitHub()">Login with GitHub</button>
+</div>
+<div *ngIf="user">
+	<h2>Welcome, {{ user.login }}</h2>
+	<img [src]="user.avatar_url" alt="User Avatar" width="100">
+</div>
